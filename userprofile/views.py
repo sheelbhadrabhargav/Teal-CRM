@@ -1,6 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .models import Userprofile
+from team.models import Team
 
 def signup(request):
     if request.method == "POST":
@@ -16,5 +18,11 @@ def signup(request):
     
     return render(request, 'userprofile/signup.html', {'form':form})
 
-def login(request):
-    return render(request, 'userprofile/login.html')
+#def login(request):   Don't know why it is here but I am not touching it until my project is compelete.
+#    return render(request, 'userprofile/login.html')
+
+@login_required
+def myaccount(request):
+    team = Team.objects.filter(created_by=request.user)[0]
+    return render(request, 'userprofile/myaccount.html', {
+        'team':team})

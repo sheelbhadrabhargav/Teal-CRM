@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+{% block title %}My Account{% endblock  %}
+{% block content %}
+<div class="py-6 px-6">
+    <h1 class="text-xl">My Account</h1>
+    <p class="mb-2">
+        <strong>Username: </strong>{{request.user.username}}
+    </p>
+    <p>
+        <strong>Team: </strong>{{team.name}}
+    </p class="mb-2">
+    <hr class="mb-4">
+
+    <form action="{% url 'logout' %}" method="post" class="inline">
+        {% csrf_token %}
+        <button type="submit" class="py-3 px-4 bg-red-500 rounded-xl text-white">
+             Log Out
+        </button>
+    </form>
+
+</div>
+{% endblock %}
