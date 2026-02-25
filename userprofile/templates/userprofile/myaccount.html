@@ -6,9 +6,14 @@
     <p class="mb-2">
         <strong>Username: </strong>{{request.user.username}}
     </p>
-    <p>
+    <p class="mb-2">
         <strong>Team: </strong>{{team.name}}
-    </p class="mb-2">
+        
+        {% if team.created_by == request.user %}
+            <a href="{% url 'edit_team' team.id %}">(Edit)</a>
+        {% endif %}
+            
+    </p >
     <hr class="mb-4">
 
     <form action="{% url 'logout' %}" method="post" class="inline">

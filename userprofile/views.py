@@ -12,6 +12,10 @@ def signup(request):
             user = form.save()
             Userprofile.objects.create(user=user)
             
+            team=Team.objects.create(user=user)
+            team.members.add(request.user)
+            team.save()
+            
             return redirect('login')
     else:
         form = UserCreationForm()
