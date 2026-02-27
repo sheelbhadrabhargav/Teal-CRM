@@ -1,11 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 from .forms import AddLeadForm
 from .models import Lead
 from client.models import Client
 from team.models import Team
 
+from django.views.generic import ListView
+
+class LeadListView(ListView):
+    
+    
 @login_required
 def lead_list(request):
     leads = Lead.objects.filter(created_by=request.user, converted_to_client=False)
@@ -25,7 +31,7 @@ def lead_delete(request, pk):
     
     messages.success(request, "The lead was deleted.")
     
-    return redirect('lead_list')
+    return redirect('leads:list')
 
 @login_required
 def lead_edit(request, pk):
@@ -35,7 +41,7 @@ def lead_edit(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Changes are saved.")
-            return redirect('lead_list')
+            return redirect('leads:list')
     else:
         form=AddLeadForm(instance=lead)
         return render(request, 'lead/lead_edit.html', {'form':form})
@@ -52,7 +58,7 @@ def add_lead(request):
             lead.team = team
             lead.save()
             messages.success(request, "The lead is created.")
-            return redirect('lead_list')
+            return redirect('leads:list')
     else:
         form = AddLeadForm()
     return render(request, 'lead/add_lead.html', {
@@ -74,4 +80,4 @@ def convert_to_client(request, pk):
     lead.converted_to_client = True
     lead.save()
     messages.success(request, "The lead is converted to client.")
-    return redirect('lead_list')
+    return redirect('leads:list')
